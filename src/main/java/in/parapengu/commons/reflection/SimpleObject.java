@@ -1,4 +1,4 @@
-package in.parapengu.commons.nms;
+package in.parapengu.commons.reflection;
 
 public class SimpleObject {
 

@@ -1,4 +1,4 @@
-package in.parapengu.commons.nms;
+package in.parapengu.commons.reflection;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -8,6 +8,13 @@
     <artifactId>commons</artifactId>
     <version>1.0.0</version>
 
+    <distributionManagement>
+        <repository>
+            <id>komp-repo</id>
+            <url>http://repo.kompking.info/</url>
+        </repository>
+    </distributionManagement>
+
     <repositories>
         <repository>
             <id>bukkit-repo</id>

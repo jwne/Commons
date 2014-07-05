@@ -199,6 +199,10 @@ public class StringUtils {
     }
 
     public static String[] trim(String string, int length, int sections) {
+	    if(string.length() > length) {
+		    string = string.substring(0, length);
+	    }
+
         String[] result = new String[length];
         for (int i = 0; i < result.length; i++) {
             result[i] = "";

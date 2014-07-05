@@ -31,34 +31,14 @@ public abstract class Countdown {
 	 * @param duration The duration of the countdown
 	 * @param async If the countdown should be run asynchronously or not
 	 */
-	public Countdown(JavaPlugin plugin, String message, String replace, final int duration, boolean async) {
+	public Countdown(JavaPlugin plugin, String message, String replace, int duration, boolean async) {
 		this.replace = replace;
 		this.message = message;
 		this.duration = duration;
 
 		this.stopped = true;
 		this.run_time = 0;
-		this.schedule = new Schedule(plugin, new Runnable() {
-			@Override
-			public void run() {
-				interval();
-				if(stopped) {
-					return;
-				}
-
-				if(run_time == duration) {
-					complete();
-					stop();
-					return;
-				}
-
-				if(display()) {
-					Bukkit.broadcastMessage(message());
-				}
-
-				run_time++;
-			}
-		}, async);
+		restart(plugin, async);
 	}
 
 	/**
@@ -97,6 +77,30 @@ public abstract class Countdown {
 	 */
 	public Countdown(JavaPlugin plugin, String message, int duration) {
 		this(plugin, message, duration, true);
+	}
+
+	private void restart(JavaPlugin plugin, boolean async) {
+		this.schedule = new Schedule(plugin, new Runnable() {
+			@Override
+			public void run() {
+				interval();
+				if(stopped) {
+					return;
+				}
+
+				if(run_time == duration) {
+					complete();
+					stop();
+					return;
+				}
+
+				if(display()) {
+					Bukkit.broadcastMessage(message());
+				}
+
+				run_time++;
+			}
+		}, async);
 	}
 
 	/**
@@ -141,12 +145,27 @@ public abstract class Countdown {
 	public String message() {
 		int display = duration - run_time;
 
+		System.out.println("display: " + display);
 		List<String> timings = new ArrayList<>();
+		if(display / 60 / 60 / 24 / 7 >= 1) {
+			int weeks = (display - (display % (60 * 60 * 24 * 7))) / 60 / 60 / 24 / 7;
+			String string = weeks + " week" + (weeks == 1 ? "" : "s");
+			timings.add(string);
+			display = display % (60 * 60 * 24 * 7);
+		}
+
+		if(display / 60 / 60 / 24 >= 1) {
+			int days = (display - (display % (60 * 60 * 24))) / 60 / 60 / 24;
+			String string = days + " day" + (days == 1 ? "" : "s");
+			timings.add(string);
+			display = display % (60 * 60 * 24);
+		}
+
 		if(display / 60 / 60 >= 1) {
-			int hours = (display - (display % 60 / 60)) / 60 / 60;
+			int hours = (display - (display % (60 * 60))) / 60 / 60;
 			String string = hours + " hour" + (hours == 1 ? "" : "s");
 			timings.add(string);
-			display = display % 60 / 60;
+			display = display % (60 * 60);
 		}
 
 		if(display / 60 >= 1) {
@@ -171,6 +190,27 @@ public abstract class Countdown {
 	 */
 	public int getRemainingTime() {
 		return duration - run_time;
+	}
+
+	public void setRunTime(int runTime) {
+		this.run_time = run_time;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	public void restart() {
+		stop();
+		setRunTime(0);
+		start();
+	}
+
+	public void restart(int duration) {
+		stop();
+		setRunTime(0);
+		setDuration(duration);
+		start();
 	}
 
 }

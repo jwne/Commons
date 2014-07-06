@@ -145,7 +145,6 @@ public abstract class Countdown {
 	public String message() {
 		int display = duration - run_time;
 
-		System.out.println("display: " + display);
 		List<String> timings = new ArrayList<>();
 		if(display / 60 / 60 / 24 / 7 >= 1) {
 			int weeks = (display - (display % (60 * 60 * 24 * 7))) / 60 / 60 / 24 / 7;

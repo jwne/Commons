@@ -195,7 +195,7 @@ public abstract class Countdown {
 	public void setRunTime(int runTime) {
 		this.run_time = runTime;
 	}
-	
+
 	public int getDuration() {
 		return duration;
 	}

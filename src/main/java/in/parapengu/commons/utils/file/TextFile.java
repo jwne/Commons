@@ -33,6 +33,11 @@ public class TextFile {
 
 	public void save() {
 		printer.close();
+		printer = new PrintWriter(writer);
+	}
+
+	public void close() {
+		printer.close();
 	}
 
 }

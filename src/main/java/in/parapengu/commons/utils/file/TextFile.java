@@ -7,10 +7,14 @@ import java.io.PrintWriter;
 
 public class TextFile {
 
+	private File file;
+	private boolean append;
 	private FileWriter writer;
 	private PrintWriter printer;
 
 	public TextFile(File file, boolean append) throws IOException {
+		this.file = file;
+		this.append = append;
 		this.writer = new FileWriter(file, append);
 		this.printer = new PrintWriter(writer);
 	}
@@ -31,9 +35,15 @@ public class TextFile {
 		printer.printf("%s" + "%n" , line);
 	}
 
-	public void save() {
+	public boolean save() {
 		printer.close();
-		printer = new PrintWriter(writer);
+		try {
+			writer = new FileWriter(file, append);
+			printer = new PrintWriter(writer);
+			return true;
+		} catch(IOException ex) {
+			return false;
+		}
 	}
 
 	public void close() {

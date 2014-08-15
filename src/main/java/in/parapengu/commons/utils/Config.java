@@ -31,6 +31,7 @@ public class Config extends YamlConfiguration {
 	public void reload() {
 		try {
 			load(file);
+			return;
 		} catch(FileNotFoundException ex) {
 			/* nothing */
 		} catch(IOException | InvalidConfigurationException ex) {
